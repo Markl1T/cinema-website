@@ -1,9 +1,6 @@
 CREATE DATABASE cinema;
 
-CREATE TABLE genres (
-    genre_id INT AUTO_INCREMENT PRIMARY KEY,
-    genre_name VARCHAR(50) NOT NULL
-);
+Use cinema;
 
 CREATE TABLE movies (
     movie_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -17,8 +14,7 @@ CREATE TABLE movies (
     poster VARCHAR(255),
     trailer VARCHAR(255),
     start_date DATE NOT NULL,
-    genre_id INT,
-    FOREIGN KEY (genre_id) REFERENCES genres(genre_id)
+    genre VARCHAR(70) NOT NULL,
 );
 
 CREATE TABLE theaters (
