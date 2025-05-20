@@ -14,7 +14,7 @@ CREATE TABLE movies (
     poster VARCHAR(255),
     trailer VARCHAR(255),
     start_date DATE NOT NULL,
-    genre VARCHAR(70) NOT NULL,
+    genre VARCHAR(70) NOT NULL
 );
 
 CREATE TABLE theaters (

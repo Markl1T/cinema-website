@@ -1,9 +1,11 @@
 /* Base Styles */
 :root {
-    --primary-color: #e50914; /* Red */
+    --primary-color: #e50914;
+    /* Red */
     --primary-hover: #f40612;
     --secondary-color: #0a0a0a;
-    --accent-color: #f5c518; /* Yellow */
+    --accent-color: #f5c518;
+    /* Yellow */
     --text-color: #e6e6e6;
     --text-light: #a0a0a0;
     --background-color: #050505;
@@ -55,7 +57,11 @@ img {
     border-radius: 8px;
 }
 
-button, .btn-primary, .btn-secondary, .btn-book, .btn-login {
+button,
+.btn-primary,
+.btn-secondary,
+.btn-book,
+.btn-login {
     cursor: pointer;
     border: none;
     border-radius: 4px;
@@ -156,11 +162,13 @@ nav a::after {
     transition: all 0.3s ease;
 }
 
-nav a:hover::after, nav a.active::after {
+nav a:hover::after,
+nav a.active::after {
     width: 100%;
 }
 
-nav a:hover, nav a.active {
+nav a:hover,
+nav a.active {
     color: var(--primary-color);
 }
 
@@ -202,7 +210,7 @@ nav a:hover, nav a.active {
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at center, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.8) 100%);
+    background: radial-gradient(circle at center, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.8) 100%);
     z-index: 1;
 }
 
@@ -293,7 +301,8 @@ nav a:hover, nav a.active {
     margin-bottom: 20px;
 }
 
-.icon-time, .icon-star {
+.icon-time,
+.icon-star {
     color: var(--primary-color);
     margin-right: 5px;
 }
@@ -489,7 +498,8 @@ nav a:hover, nav a.active {
     margin-bottom: 15px;
 }
 
-.column-label, .row-label {
+.column-label,
+.row-label {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -620,25 +630,25 @@ nav a:hover, nav a.active {
     .seat-selection-page {
         padding: 40px 0;
     }
-    
+
     .movie-info-compact {
         flex-direction: column;
         text-align: center;
     }
-    
+
     .movie-thumbnail {
         margin: 0 auto;
     }
-    
+
     .seat-map-container {
         overflow-x: auto;
         padding: 0;
     }
-    
+
     .seat-map {
         min-width: 500px;
     }
-    
+
     .seat-legend {
         flex-direction: column;
         align-items: center;
@@ -651,18 +661,81 @@ nav a:hover, nav a.active {
         width: 30px;
         height: 30px;
     }
-    
+
     .seat-map {
         gap: 5px;
         grid-template-columns: 25px repeat(10, 30px);
     }
-    
-    .column-label, .row-label {
+
+    .column-label,
+    .row-label {
         font-size: 0.8rem;
     }
-    
+
     .movie-info-compact h2 {
         font-size: 1.5rem;
+    }
+}
+
+/* Pagination Controls */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    gap: 8px;
+}
+
+.pagination-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background-color: #333;
+    color: var(--text-color);
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.pagination-button:hover {
+    background-color: #444;
+    transform: translateY(-2px);
+}
+
+.pagination-button.active {
+    background-color: var(--accent-color);
+    color: #000;
+}
+
+.pagination-button.prev,
+.pagination-button.next {
+    width: auto;
+    padding: 0 15px;
+}
+
+.pagination-button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pagination-button.disabled:hover {
+    background-color: #333;
+    transform: none;
+}
+
+@media (max-width: 576px) {
+    .pagination {
+        flex-wrap: wrap;
+    }
+
+    .pagination-button {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
     }
 }
 
@@ -760,7 +833,9 @@ footer {
     font-size: 0.9rem;
 }
 
-.form-group input, .form-group textarea, .form-group select {
+.form-group input,
+.form-group textarea,
+.form-group select {
     width: 100%;
     padding: 12px 15px;
     background-color: rgba(255, 255, 255, 0.05);
@@ -770,7 +845,9 @@ footer {
     font-family: 'Montserrat', sans-serif;
 }
 
-.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
     outline: none;
     border-color: var(--primary-color);
 }
@@ -853,7 +930,8 @@ footer {
     gap: 10px;
 }
 
-.btn-edit, .btn-delete {
+.btn-edit,
+.btn-delete {
     padding: 8px 20px;
     border: none;
     border-radius: 4px;
@@ -945,12 +1023,14 @@ footer {
     font-size: 0.9rem;
 }
 
-.movie-director, .movie-cast {
+.movie-director,
+.movie-cast {
     margin-bottom: 15px;
     color: var(--text-color);
 }
 
-.movie-director strong, .movie-cast strong {
+.movie-director strong,
+.movie-cast strong {
     color: var(--accent-color);
     font-weight: 600;
 }
@@ -1019,7 +1099,8 @@ footer {
     white-space: nowrap;
 }
 
-.date-btn:hover, .date-btn.active {
+.date-btn:hover,
+.date-btn.active {
     background-color: var(--accent-color);
     color: #000;
 }
@@ -1085,11 +1166,11 @@ footer {
     .hero h2 {
         font-size: 2.8rem;
     }
-    
+
     .movie-details {
         grid-template-columns: 1fr;
     }
-    
+
     .movie-poster-large {
         max-width: 300px;
         margin: 0 auto;
@@ -1118,7 +1199,7 @@ footer {
     .newsletter-form {
         flex-direction: column;
     }
-    
+
     .movie-trailer iframe {
         height: 250px;
     }
@@ -1144,15 +1225,15 @@ footer {
     .hero p {
         font-size: 1rem;
     }
-    
+
     .time-slots {
         grid-template-columns: 1fr;
     }
-    
+
     .movie-info-detailed h1 {
         font-size: 2rem;
     }
-    
+
     .movie-trailer iframe {
         height: 200px;
     }

@@ -16,7 +16,6 @@
             <nav>
                 <ul>
                     <li><a href="index.php">Now Showing</a></li>
-                    <li><a href="coming-soon.php">Coming Soon</a></li>
                     <li><a href="login.php" class="btn-login">Login</a></li>
                     <li><a href="register.php" class="btn-login">Register</a></li>
                 </ul>

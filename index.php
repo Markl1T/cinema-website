@@ -6,7 +6,7 @@ require("includes/header.php")
     <div class="hero-content">
         <h2>Experience Movies Like Never Before</h2>
         <p>Immerse yourself in the ultimate cinematic experience with state-of-the-art technology and premium comfort.</p>
-        <a href="#now-showing" class="btn-primary">View Movies</a>
+        <a href="register.php" class="btn-primary">Join now</a>
     </div>
 </section>
 
@@ -15,85 +15,39 @@ require("includes/header.php")
         <div class="container">
             <h2 class="section-title">Now Showing</h2>
             <div class="movies-grid">
-                <!-- Movie 1 -->
-                <div class="movie-card">
-                    <a href="movie-details.php" class="movie-card-link">
-                        <div class="movie-poster">
-                            <img src="/placeholder.svg?height=400&width=300" alt="Interstellar">
-                        </div>
-                        <div class="movie-info">
-                            <h3>Interstellar</h3>
-                            <span class="movie-genre">Sci-Fi, Adventure</span>
-                            <div class="movie-meta">
-                                <span><span class="icon-time">⏱</span> 169 min</span>
-                            </div>
-                            <div class="card-buttons">
-                                <a href="movie-details.php" class="btn-details">View Details</a>
-                                <a href="seat-selection.php" class="btn-book">Book Now</a>
-                            </div>
-                        </div>
-                    </a>
-                </div>
+                <?php 
+                require_once("includes/connect-db.php");
+                $today = date("Y-m-d");
+                $now = date("H:i:s");
+                $movies = $conn->execute_query("SELECT m.* FROM movies m JOIN screenings s ON m.movie_id = s.movie_id WHERE date > ? OR (date = ? AND time > ?) GROUP BY movie_id", [$today, $today, $now]);
+                if($movies->num_rows > 0) {
+                    while ($movie = $movies->fetch_assoc()) {
+                        include("includes/movie-card.php");
+                    }
+                }
+                else {
+                    echo "<p>No movies are currently showing. Please check back later!</p>";
+                }
+                ?>
+            </div>
+        </div>
+    </section>
 
-                <!-- Movie 2 -->
-                <div class="movie-card">
-                    <a href="movie-details.php" class="movie-card-link">
-                        <div class="movie-poster">
-                            <img src="/placeholder.svg?height=400&width=300" alt="The Dark Knight">
-                        </div>
-                        <div class="movie-info">
-                            <h3>The Dark Knight</h3>
-                            <span class="movie-genre">Action, Crime, Drama</span>
-                            <div class="movie-meta">
-                                <span><span class="icon-time">⏱</span> 152 min</span>
-                            </div>
-                            <div class="card-buttons">
-                                <a href="movie-details.php" class="btn-details">View Details</a>
-                                <a href="seat-selection.php" class="btn-book">Book Now</a>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Movie 3 -->
-                <div class="movie-card">
-                    <a href="movie-details.php" class="movie-card-link">
-                        <div class="movie-poster">
-                            <img src="/placeholder.svg?height=400&width=300" alt="Inception">
-                        </div>
-                        <div class="movie-info">
-                            <h3>Inception</h3>
-                            <span class="movie-genre">Action, Adventure, Sci-Fi</span>
-                            <div class="movie-meta">
-                                <span><span class="icon-time">⏱</span> 148 min</span>
-                            </div>
-                            <div class="card-buttons">
-                                <a href="movie-details.php" class="btn-details">View Details</a>
-                                <a href="seat-selection.php" class="btn-book">Book Now</a>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Movie 4 -->
-                <div class="movie-card">
-                    <a href="movie-details.php" class="movie-card-link">
-                        <div class="movie-poster">
-                            <img src="/placeholder.svg?height=400&width=300" alt="The Matrix">
-                        </div>
-                        <div class="movie-info">
-                            <h3>The Matrix</h3>
-                            <span class="movie-genre">Action, Sci-Fi</span>
-                            <div class="movie-meta">
-                                <span><span class="icon-time">⏱</span> 136 min</span>
-                            </div>
-                            <div class="card-buttons">
-                                <a href="movie-details.php" class="btn-details">View Details</a>
-                                <a href="seat-selection.php" class="btn-book">Book Now</a>
-                            </div>
-                        </div>
-                    </a>
-                </div>
+    <section id="coming-soon" class="coming-soon">
+        <div class="container">
+            <h2 class="section-title">Coming Soon</h2>
+            <div class="movies-grid">
+                <?php 
+                $movies = mysqli_query($conn, "SELECT m.* FROM movies m LEFT JOIN screenings s ON m.movie_id = s.movie_id WHERE s.screening_id IS NULL ORDER BY start_date");
+                if($movies->num_rows > 0) {
+                    while ($movie = $movies->fetch_assoc()) {
+                        include("includes/movie-card.php");
+                    }
+                }
+                else {
+                    echo "<p>No upcoming movies at the moment. Please check back soon!</p>";
+                }
+                ?>
             </div>
         </div>
     </section>
