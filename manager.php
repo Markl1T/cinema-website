@@ -1,135 +1,102 @@
 <?php
 include("includes/header.php");
 ?>
+
 <body>
-    <main class="manager-page">
-        <div class="container">
-            <h2 class="section-title">Movie Manager</h2>
+    <div class="container">
+        <h2 class="section-title">Movie Manager</h2>
 
-            <div class="manager-container">
-                <div class="manager-header">
-                    <h3>Content Management</h3>
-                    <button class="btn-primary">Add New Movie</button>
+        <div class="manager-container">
+            <div class="manager-header">
+                <h3>Content Management</h3>
+                <div>
+                    <a href="add-movie.php" class="btn-primary">Add New Movie</a>
+                    <a href="add-screening.php" class="btn-primary">Add New Screening</a>
                 </div>
 
-                <div class="manager-tabs">
-                    <button class="manager-tab active" data-tab="movies">Movies</button>
-                    <button class="manager-tab" data-tab="screenings">Screenings</button>
-                </div>
+            </div>
 
-                <div class="manager-content active" id="movies-content">
-                    <table class="manager-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Title</th>
-                                <th>Genre</th>
-                                <th>Duration</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Interstellar</td>
-                                <td>Sci-Fi, Adventure</td>
-                                <td>169 min</td>
-                                <td>Now Showing</td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="btn-edit">Edit</button>
-                                        <button class="btn-delete">Delete</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>The Dark Knight</td>
-                                <td>Action, Crime, Drama</td>
-                                <td>152 min</td>
-                                <td>Now Showing</td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="btn-edit">Edit</button>
-                                        <button class="btn-delete">Delete</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Inception</td>
-                                <td>Action, Adventure, Sci-Fi</td>
-                                <td>148 min</td>
-                                <td>Now Showing</td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="btn-edit">Edit</button>
-                                        <button class="btn-delete">Delete</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>The Matrix</td>
-                                <td>Action, Sci-Fi</td>
-                                <td>136 min</td>
-                                <td>Now Showing</td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="btn-edit">Edit</button>
-                                        <button class="btn-delete">Delete</button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="manager-tabs">
+                <button class="manager-tab active" data-tab="movies">Movies</button>
+                <button class="manager-tab" data-tab="screenings">Screenings</button>
+            </div>
 
-                <div class="manager-content" id="screenings-content">
-                    <table class="manager-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Movie</th>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Theater</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Interstellar</td>
-                                <td>2025-05-01</td>
-                                <td>18:30</td>
-                                <td>Theater 1</td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="btn-edit">Edit</button>
-                                        <button class="btn-delete">Delete</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>The Dark Knight</td>
-                                <td>2025-05-01</td>
-                                <td>20:00</td>
-                                <td>Theater 2</td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="btn-edit">Edit</button>
-                                        <button class="btn-delete">Delete</button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="manager-content active" id="movies-content">
+                <table class="manager-table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Genre</th>
+                            <th>Duration</th>
+                            <th>Start Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        include("includes/connect-db.php");
+                        $movies = $conn->execute_query("SELECT * FROM movies ORDER BY start_date");
+                        if ($movies->num_rows > 0) {
+                            while ($movie = $movies->fetch_assoc()) {
+                                echo '<tr>';
+                                echo '<td>' . $movie['title'] . '</td>';
+                                echo '<td>' . $movie['genre'] .'</td>';
+                                echo '<td>'. $movie['duration'] .'</td>';
+                                echo '<td>'. date("F j", strtotime($movie['start_date'])) .'</td>';
+                                echo '<td>';
+                                echo '<div class="action-buttons">';
+                                echo '<button class="btn-edit">Edit</button>';
+                                echo '<button class="btn-delete">Delete</button>';
+                                echo '</div>';
+                                echo '</td>';
+                                echo '</tr>';
+                            }
+                        } else {
+                            echo "<p>No movies found.</p>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="manager-content" id="screenings-content">
+                <table class="manager-table">
+                    <thead>
+                        <tr>
+                            <th>Movie</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Theater</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $screenings = $conn->execute_query("SELECT * FROM screenings s JOIN movies m ON s.movie_id = m.movie_id ORDER BY date, time");
+                        if ($screenings->num_rows > 0) {
+                            while ($screening = $screenings->fetch_assoc()) {
+                                echo '<tr>';
+                                echo '<td>' . $screening['title'] . '</td>';
+                                echo '<td>' . date("F j", strtotime($screening['date'])) .'</td>';
+                                echo '<td>'. date("H:i", strtotime($screening['time'])) .'</td>';
+                                echo '<td>'. $screening['theater_id'] .'</td>';
+                                echo '<td>';
+                                echo '<div class="action-buttons">';
+                                echo '<button class="btn-edit">Edit</button>';
+                                echo '<button class="btn-delete">Delete</button>';
+                                echo '</div>';
+                                echo '</td>';
+                                echo '</tr>';
+                            }
+                        } else {
+                            echo "<p>No screenings found.</p>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
             </div>
         </div>
+    </div>
     </main>
 
     <script>
@@ -156,6 +123,6 @@ include("includes/header.php");
             });
         });
     </script>
-<?php
-include("includes/footer.php");
-?>
+    <?php
+    include("includes/footer.php");
+    ?>
