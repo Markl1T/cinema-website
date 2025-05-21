@@ -76,15 +76,16 @@ require("includes/header.php")
                         <input type="password" id="register-password" name="registerPassword" required>
                     </div>
 
-                    <input type="submit" name="submit" value="Create Account" class="btn-primary">
-                    
-                </form>
-                <?php
-                    if (!empty($error)) {?>
+                    <?php
+                        if (!empty($error)) {?>
                         <div class="form-group">
                             <label style="color: red;"><?php echo $error;?></label>
                         </div>
-                <?php } ?>
+                    <?php } ?>
+
+                    <input type="submit" name="submit" value="Create Account" class="btn-primary">
+                    
+                </form>
             </div>
         </div>
     </div>
