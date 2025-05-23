@@ -53,43 +53,73 @@ displayHeader(true, true, true);
             </div>
         </div>
 
-        <div class="showtimes">
-            <h2>Showtimes</h2>
-            <div class="date-selector">
-                <button class="date-btn active">Today</button>
-                <button class="date-btn">Tomorrow</button>
-                <button class="date-btn">Wed, May 1</button>
-                <button class="date-btn">Thu, May 2</button>
-                <button class="date-btn">Fri, May 3</button>
-            </div>
-            <div class="time-slots">
-                <div class="time-slot">
-                    <div class="time">10:30 AM</div>
-                    <div class="screen">Screen 1</div>
-                    <a href="seat-selection.php?time=10:30&screen=1" class="btn-book-time">Select Seats</a>
-                </div>
-                <div class="time-slot">
-                    <div class="time">1:15 PM</div>
-                    <div class="screen">Screen 2</div>
-                    <a href="seat-selection.php?time=13:15&screen=2" class="btn-book-time">Select Seats</a>
-                </div>
-                <div class="time-slot">
-                    <div class="time">4:00 PM</div>
-                    <div class="screen">Screen 1</div>
-                    <a href="seat-selection.php?time=16:00&screen=1" class="btn-book-time">Select Seats</a>
-                </div>
-                <div class="time-slot">
-                    <div class="time">7:30 PM</div>
-                    <div class="screen">Screen 3 (IMAX)</div>
-                    <a href="seat-selection.php?time=19:30&screen=3" class="btn-book-time premium">Select Seats</a>
-                </div>
-                <div class="time-slot">
-                    <div class="time">10:15 PM</div>
-                    <div class="screen">Screen 2</div>
-                    <a href="seat-selection.php?time=22:15&screen=2" class="btn-book-time">Select Seats</a>
-                </div>
-            </div>
-        </div>
+<?php
+    // Get unique screening dates for the movie
+    $stmt = $conn->prepare("SELECT DISTINCT(date) FROM screenings WHERE movie_id = ? AND date >= CURDATE() ORDER BY date, time");
+    $stmt->bind_param("i", $movie_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if($result->num_rows > 0) {
+        echo '<div class="showtimes">';
+        echo '<h2>Showtimes</h2>';
+        echo '<div class="date-selector">';
+
+        // Make first date active if no date is selected
+        $first_row = $result->fetch_assoc();
+        $date = htmlspecialchars(date("F j", strtotime($first_row['date'])));
+        $selected_date = '';
+        if (!isset($_GET['date'])){
+            $selected_date = $date;
+            echo '<a href="movie-details.php?id='. $movie_id .'&date='. $date. '" class="date-btn active">' . $date . '</a>';
+        } else if ($_GET['date'] == $date) {
+            $selected_date = $date;
+            echo '<a href="movie-details.php?id='. $movie_id .'&date='. $date. '" class="date-btn active">' . $date . '</a>';
+        } else {
+            echo '<a href="movie-details.php?id='. $movie_id .'&date='. $date. '" class="date-btn">' . $date . '</a>';
+        }
+        
+        //check other dates
+        while ($row = $result->fetch_assoc()) {
+            $date = htmlspecialchars(date("F j", strtotime($row['date'])));
+            if (!isset($_GET['date'])){
+                echo '<a href="movie-details.php?id='. $movie_id .'&date='. $date. '" class="date-btn">' . $date . '</a>';
+            } else if ($_GET['date'] == $date) {
+                $selected_date = $date;
+                echo '<a href="movie-details.php?id='. $movie_id .'&date='. $date. '" class="date-btn active">' . $date . '</a>';
+            } else {
+                echo '<a href="movie-details.php?id='. $movie_id .'&date='. $date. '" class="date-btn">' . $date . '</a>';
+            }
+        }
+        echo '</div>';
+        echo '<div class="time-slots">';
+        
+        $stmt = $conn->prepare("SELECT * FROM screenings WHERE movie_id = ? AND date >= CURDATE() ORDER BY date, time");
+        $stmt->bind_param("i", $movie_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        // Display showtimes for the selected date
+        while ($row = $result->fetch_assoc()) {
+            $screening_id = htmlspecialchars($row['screening_id']);
+            $date = htmlspecialchars(date("F j", strtotime($row['date'])));
+            if ($selected_date != $date) {
+                // Skip if the date does not match the selected date
+                continue;
+            }
+            $time = htmlspecialchars(date("g:i A", strtotime($row['time'])));
+            $screen = htmlspecialchars($row['theater_id']);
+            echo '<div class="time-slot ' . $date . '">';
+            echo '<div class="time">' . $time . '</div>';
+            echo '<div class="screen">Screen ' . $screen . '</div>';
+            echo '<a href="seat-selection.php?id=' . $screening_id . '" class="btn-book-time">Book</a>';
+            echo '</div>';
+        }
+        echo '</div>';
+        echo '</div>';
+    } else {
+        echo '<p>No showtimes available for this movie.</p>';
+    }
+?>
     </div>
 </main>
 

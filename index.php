@@ -1,7 +1,7 @@
 <?php
     session_start();
     include("includes/header.php");
-    if (isset($_SESSION["email"]) && isset($_SESSION["password"]) && isset($_SESSION["role"])) {
+    if (isset($_SESSION["email"]) && isset($_SESSION["role"])) {
         if ($_SESSION["role"] === "manager") {
             header("Location: manager.php");
             exit();
