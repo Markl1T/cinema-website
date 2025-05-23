@@ -63,7 +63,8 @@ if (isset($_POST["submit"])) {
 ?>
 
 <?php
-require("includes/header.php")
+include("includes/header.php");
+displayHeader(true, true, true);
 ?>
 <main class="login-page">
     <div class="container">

@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+<?php
+    function displayHeader($nowshowing = true, $login = true, $register = true, $logout = false){
+?>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -15,10 +18,25 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="index.php">Now Showing</a></li>
-                    <li><a href="login.php" class="btn-login">Login</a></li>
-                    <li><a href="register.php" class="btn-login">Register</a></li>
+<?php    
+    if ($nowshowing){
+        echo '<li><a href="index.php">Now Showing</a></li>';
+    }
+    if ($login){
+        echo '<li><a href="login.php" class="btn-login">Login</a></li>';
+    }
+    if ($register){
+        echo '<li><a href="register.php" class="btn-login">Register</a></li>';
+    }
+    if ($logout){
+        echo '<li><a href="logout.php" class="btn-login">Logout</a></li>';
+    }
+?> 
                 </ul>
             </nav>
         </div>
     </header>
+<?php
+    }
+?>
+                

@@ -1,5 +1,16 @@
 <?php
-require("includes/header.php")
+    session_start();
+    include("includes/header.php");
+    if (isset($_SESSION["email"]) && isset($_SESSION["password"]) && isset($_SESSION["role"])) {
+        if ($_SESSION["role"] === "manager") {
+            header("Location: manager.php");
+            exit();
+        } else if ($_SESSION["role"] === "customer") {
+            displayHeader(true, false, false, true);
+        }
+    }else{
+        displayHeader(true, true, true);
+    }
 ?>
 <section class="hero">
     <div class="hero-overlay"></div>

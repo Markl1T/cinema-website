@@ -1,5 +1,6 @@
 <?php
-require("includes/header.php")
+require("includes/header.php");
+displayHeader(true, true, true);
 ?>
 <main class="seat-selection-page">
     <div class="container">

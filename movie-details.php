@@ -1,33 +1,54 @@
 <?php
-require("includes/header.php")
+    if(isset($_GET['id']) && is_numeric($_GET['id'])) {
+        require_once("includes/connect-db.php");
+        $movie_id = $_GET['id'];
+        $stmt = $conn->prepare("SELECT * FROM movies WHERE movie_id = ?");
+        $stmt->bind_param("i", $movie_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if($result->num_rows > 0) {
+            $movie = $result->fetch_assoc();
+        } else {
+            header("Location: index.php");
+            exit();
+        }
+    }else{
+        header("Location: index.php");
+        exit();
+    }    
+
+?>
+
+<?php
+require("includes/header.php");
+displayHeader(true, true, true);
 ?>
 <main class="movie-details-page">
     <div class="container">
         <div class="movie-details">
             <div class="movie-poster-large">
-                <img src="/placeholder.svg?height=600&width=400" alt="Interstellar">
+                <img src="<?php echo htmlspecialchars($movie['poster']); ?>" alt="<?php echo htmlspecialchars($movie['title']); ?>">
             </div>
             <div class="movie-info-detailed">
-                <h1>Interstellar</h1>
+                <h1><?php echo htmlspecialchars($movie['title']); ?></h1>
                 <div class="movie-meta">
-                    <span class="movie-rating">PG-13</span>
-                    <span class="movie-genre">Sci-Fi, Adventure</span>
-                    <span class="movie-duration">169 min</span>
-                    <span class="movie-release">2014</span>
+                    <span class="movie-rating"><?php echo htmlspecialchars($movie['rating']); ?></span>
+                    <span class="movie-genre"><?php echo htmlspecialchars($movie['genre']); ?></span>
+                    <span class="movie-duration"><?php echo htmlspecialchars($movie['duration']); ?> min</span>
+                    <span class="movie-release"><?php echo htmlspecialchars($movie['release_year']); ?></span>
                 </div>
                 <div class="movie-director">
-                    <strong>Director:</strong> Christopher Nolan
+                    <strong>Director:</strong> <?php echo htmlspecialchars($movie['director']); ?>
                 </div>
                 <div class="movie-cast">
-                    <strong>Cast:</strong> Matthew McConaughey, Anne Hathaway, Jessica Chastain
+                    <strong>Cast:</strong> <?php echo htmlspecialchars($movie['cast']); ?>
                 </div>
                 <div class="movie-description">
-                    <p>A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.</p>
-                    <p>In Earth's future, a global crop blight and second Dust Bowl are slowly rendering the planet uninhabitable. Professor Brand (Michael Caine), a brilliant NASA physicist, is working on plans to save mankind by transporting Earth's population to a new home via a wormhole. But first, Brand must send former NASA pilot Cooper (Matthew McConaughey) and a team of researchers through the wormhole and across the galaxy to find out which of three planets could be mankind's new home.</p>
+                    <?php echo htmlspecialchars($movie['description']); ?>
                 </div>
                 <div class="movie-trailer">
                     <h3>Trailer</h3>
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/zSWdZVtXT7E" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe width="560" height="315" src="<?php echo htmlspecialchars($movie['trailer']); ?>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
         </div>
