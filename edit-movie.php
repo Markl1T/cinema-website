@@ -5,7 +5,7 @@ if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
         header("Location: index.php");
         exit();
     }
-}else{
+} else {
     header("Location: index.php");
     exit();
 }
@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors[] = "Director is required.";
     }
     if (empty($start_date)) {
-    $errors[] = "Start date is required.";
+        $errors[] = "Start date is required.";
     }
 
 

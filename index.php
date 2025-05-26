@@ -1,14 +1,14 @@
 <?php
-    session_start();
-    include("includes/header.php");
-    if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
-        if ($_SESSION["role"] === "manager") {
-            header("Location: manager.php");
-            exit();
-        }
+session_start();
+include("includes/header.php");
+if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
+    if ($_SESSION["role"] === "manager") {
+        header("Location: manager.php");
+        exit();
     }
+}
 
-    require_once("includes/connect-db.php");
+require_once("includes/connect-db.php");
 ?>
 <section class="hero">
     <div class="hero-overlay"></div>
@@ -22,7 +22,7 @@
             }
         } else {
             echo '<a href="register.php" class="btn-primary">Join now</a>';
-        }?>
+        } ?>
     </div>
 </section>
 
@@ -31,16 +31,15 @@
         <div class="container">
             <h2 class="section-title">Now Showing</h2>
             <div class="movies-grid">
-                <?php 
+                <?php
                 $today = date("Y-m-d");
                 $now = date("H:i:s");
                 $movies = $conn->execute_query("SELECT m.* FROM movies m JOIN screenings s ON m.movie_id = s.movie_id WHERE date > ? OR (date = ? AND time > ?) GROUP BY movie_id", [$today, $today, $now]);
-                if($movies->num_rows > 0) {
+                if ($movies->num_rows > 0) {
                     while ($movie = $movies->fetch_assoc()) {
                         include("includes/movie-card.php");
                     }
-                }
-                else {
+                } else {
                     echo "<p>No movies are currently showing. Please check back later!</p>";
                 }
                 ?>
@@ -52,14 +51,13 @@
         <div class="container">
             <h2 class="section-title">Coming Soon</h2>
             <div class="movies-grid">
-                <?php 
+                <?php
                 $movies = mysqli_query($conn, "SELECT m.* FROM movies m LEFT JOIN screenings s ON m.movie_id = s.movie_id WHERE s.screening_id IS NULL ORDER BY start_date");
-                if($movies->num_rows > 0) {
+                if ($movies->num_rows > 0) {
                     while ($movie = $movies->fetch_assoc()) {
                         include("includes/movie-card.php");
                     }
-                }
-                else {
+                } else {
                     echo "<p>No upcoming movies at the moment. Please check back soon!</p>";
                 }
                 ?>

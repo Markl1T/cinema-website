@@ -83,10 +83,10 @@ include("includes/header.php");
                     </div>
 
                     <?php
-                        if (!empty($error)) {?>
-                    <div class="form-group">
-                        <label style="color: red;"><?php echo $error;?></label>
-                    </div>
+                    if (!empty($error)) { ?>
+                        <div class="form-group">
+                            <label style="color: red;"><?php echo $error; ?></label>
+                        </div>
                     <?php } ?>
 
                     <input type="submit" name="submit" value="Sign In" class="btn-primary">

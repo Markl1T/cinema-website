@@ -12,7 +12,7 @@ if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
     exit();
 }
 
-include ("includes/connect-db.php");
+include("includes/connect-db.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['screening_id']) && is_numeric($_POST['screening_id'])) {
@@ -36,4 +36,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 } else {
     echo "Invalid request method.";
 }
-?>

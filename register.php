@@ -43,7 +43,7 @@ if (isset($_POST["submit"])) {
                 header("Location: login.php");
                 exit();
             } else {
-                $error = "Error creating account. Please try again.";  
+                $error = "Error creating account. Please try again.";
             }
         }
     }
@@ -77,14 +77,14 @@ require("includes/header.php");
                     </div>
 
                     <?php
-                        if (!empty($error)) {?>
+                    if (!empty($error)) { ?>
                         <div class="form-group">
-                            <label style="color: red;"><?php echo $error;?></label>
+                            <label style="color: red;"><?php echo $error; ?></label>
                         </div>
                     <?php } ?>
 
                     <input type="submit" name="submit" value="Create Account" class="btn-primary">
-                    
+
                 </form>
             </div>
         </div>

@@ -1,30 +1,30 @@
 <?php
-    session_start();
+session_start();
 
-    if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
-        if ($_SESSION["role"] === "manager") {
-            header("Location: manager.php");
-            exit();
-        }
+if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
+    if ($_SESSION["role"] === "manager") {
+        header("Location: manager.php");
+        exit();
     }
+}
 
-    if(isset($_GET['id']) && is_numeric($_GET['id'])) {
-        require_once("includes/connect-db.php");
-        $movie_id = $_GET['id'];
-        $stmt = $conn->prepare("SELECT * FROM movies WHERE movie_id = ?");
-        $stmt->bind_param("i", $movie_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if($result->num_rows > 0) {
-            $movie = $result->fetch_assoc();
-        } else {
-            header("Location: index.php");
-            exit();
-        }
-    }else{
+if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+    require_once("includes/connect-db.php");
+    $movie_id = $_GET['id'];
+    $stmt = $conn->prepare("SELECT * FROM movies WHERE movie_id = ?");
+    $stmt->bind_param("i", $movie_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        $movie = $result->fetch_assoc();
+    } else {
         header("Location: index.php");
         exit();
-    }    
+    }
+} else {
+    header("Location: index.php");
+    exit();
+}
 
 ?>
 
@@ -61,73 +61,73 @@ require("includes/header.php");
             </div>
         </div>
 
-<?php
-    // Get unique screening dates for the movie
-    $stmt = $conn->prepare("SELECT DISTINCT(date) FROM screenings WHERE movie_id = ? AND date >= CURDATE() ORDER BY date, time");
-    $stmt->bind_param("i", $movie_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    if($result->num_rows > 0) {
-        echo '<div class="showtimes">';
-        echo '<h2>Showtimes</h2>';
-        echo '<div class="date-selector">';
-
-        // Make first date active if no date is selected
-        $first_row = $result->fetch_assoc();
-        $date = htmlspecialchars(date("F j", strtotime($first_row['date'])));
-        $selected_date = '';
-        if (!isset($_GET['date'])){
-            $selected_date = $date;
-            echo '<a href="movie-details.php?id='. $movie_id .'&date='. $date. '" class="date-btn active">' . $date . '</a>';
-        } else if ($_GET['date'] == $date) {
-            $selected_date = $date;
-            echo '<a href="movie-details.php?id='. $movie_id .'&date='. $date. '" class="date-btn active">' . $date . '</a>';
-        } else {
-            echo '<a href="movie-details.php?id='. $movie_id .'&date='. $date. '" class="date-btn">' . $date . '</a>';
-        }
-        
-        //check other dates
-        while ($row = $result->fetch_assoc()) {
-            $date = htmlspecialchars(date("F j", strtotime($row['date'])));
-            if (!isset($_GET['date'])){
-                echo '<a href="movie-details.php?id='. $movie_id .'&date='. $date. '" class="date-btn">' . $date . '</a>';
-            } else if ($_GET['date'] == $date) {
-                $selected_date = $date;
-                echo '<a href="movie-details.php?id='. $movie_id .'&date='. $date. '" class="date-btn active">' . $date . '</a>';
-            } else {
-                echo '<a href="movie-details.php?id='. $movie_id .'&date='. $date. '" class="date-btn">' . $date . '</a>';
-            }
-        }
-        echo '</div>';
-        echo '<div class="time-slots">';
-        
-        $stmt = $conn->prepare("SELECT * FROM screenings WHERE movie_id = ? AND date >= CURDATE() ORDER BY date, time");
+        <?php
+        // Get unique screening dates for the movie
+        $stmt = $conn->prepare("SELECT DISTINCT(date) FROM screenings WHERE movie_id = ? AND date >= CURDATE() ORDER BY date, time");
         $stmt->bind_param("i", $movie_id);
         $stmt->execute();
         $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            echo '<div class="showtimes">';
+            echo '<h2>Showtimes</h2>';
+            echo '<div class="date-selector">';
 
-        // Display showtimes for the selected date
-        while ($row = $result->fetch_assoc()) {
-            $screening_id = htmlspecialchars($row['screening_id']);
-            $date = htmlspecialchars(date("F j", strtotime($row['date'])));
-            if ($selected_date != $date) {
-                // Skip if the date does not match the selected date
-                continue;
+            // Make first date active if no date is selected
+            $first_row = $result->fetch_assoc();
+            $date = htmlspecialchars(date("F j", strtotime($first_row['date'])));
+            $selected_date = '';
+            if (!isset($_GET['date'])) {
+                $selected_date = $date;
+                echo '<a href="movie-details.php?id=' . $movie_id . '&date=' . $date . '" class="date-btn active">' . $date . '</a>';
+            } else if ($_GET['date'] == $date) {
+                $selected_date = $date;
+                echo '<a href="movie-details.php?id=' . $movie_id . '&date=' . $date . '" class="date-btn active">' . $date . '</a>';
+            } else {
+                echo '<a href="movie-details.php?id=' . $movie_id . '&date=' . $date . '" class="date-btn">' . $date . '</a>';
             }
-            $time = htmlspecialchars(date("g:i A", strtotime($row['time'])));
-            $screen = htmlspecialchars($row['theater_id']);
-            echo '<div class="time-slot ' . $date . '">';
-            echo '<div class="time">' . $time . '</div>';
-            echo '<div class="screen">Screen ' . $screen . '</div>';
-            echo '<a href="seat-selection.php?id=' . $screening_id . '" class="btn-book-time">Book</a>';
+
+            //check other dates
+            while ($row = $result->fetch_assoc()) {
+                $date = htmlspecialchars(date("F j", strtotime($row['date'])));
+                if (!isset($_GET['date'])) {
+                    echo '<a href="movie-details.php?id=' . $movie_id . '&date=' . $date . '" class="date-btn">' . $date . '</a>';
+                } else if ($_GET['date'] == $date) {
+                    $selected_date = $date;
+                    echo '<a href="movie-details.php?id=' . $movie_id . '&date=' . $date . '" class="date-btn active">' . $date . '</a>';
+                } else {
+                    echo '<a href="movie-details.php?id=' . $movie_id . '&date=' . $date . '" class="date-btn">' . $date . '</a>';
+                }
+            }
             echo '</div>';
+            echo '<div class="time-slots">';
+
+            $stmt = $conn->prepare("SELECT * FROM screenings WHERE movie_id = ? AND date >= CURDATE() ORDER BY date, time");
+            $stmt->bind_param("i", $movie_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            // Display showtimes for the selected date
+            while ($row = $result->fetch_assoc()) {
+                $screening_id = htmlspecialchars($row['screening_id']);
+                $date = htmlspecialchars(date("F j", strtotime($row['date'])));
+                if ($selected_date != $date) {
+                    // Skip if the date does not match the selected date
+                    continue;
+                }
+                $time = htmlspecialchars(date("g:i A", strtotime($row['time'])));
+                $screen = htmlspecialchars($row['theater_id']);
+                echo '<div class="time-slot ' . $date . '">';
+                echo '<div class="time">' . $time . '</div>';
+                echo '<div class="screen">Screen ' . $screen . '</div>';
+                echo '<a href="seat-selection.php?id=' . $screening_id . '" class="btn-book-time">Book</a>';
+                echo '</div>';
+            }
+            echo '</div>';
+            echo '</div>';
+        } else {
+            echo '<p>No showtimes available for this movie.</p>';
         }
-        echo '</div>';
-        echo '</div>';
-    } else {
-        echo '<p>No showtimes available for this movie.</p>';
-    }
-?>
+        ?>
     </div>
 </main>
 

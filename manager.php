@@ -47,28 +47,30 @@ include("includes/header.php");
                         if ($movies->num_rows > 0):
                             while ($movie = $movies->fetch_assoc()):
                         ?>
-                        <tr>
-                            <td><?= htmlspecialchars($movie['title']) ?></td>
-                            <td><?= htmlspecialchars($movie['genre']) ?></td>
-                            <td><?= htmlspecialchars($movie['duration']) ?></td>
-                            <td><?= date("F j", strtotime($movie['start_date'])) ?></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <a href="edit-movie.php?id=<?= $movie['movie_id'] ?>">
-                                        <button class="btn-edit">Edit</button>
-                                    </a>
-                                    <form action="delete-movie.php" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this movie?');">
-                                        <input type="hidden" name="movie_id" value="<?= $movie['movie_id'] ?>">
-                                        <button class="btn-delete" type="submit">Delete</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                        <?php
+                                <tr>
+                                    <td><?= htmlspecialchars($movie['title']) ?></td>
+                                    <td><?= htmlspecialchars($movie['genre']) ?></td>
+                                    <td><?= htmlspecialchars($movie['duration']) ?></td>
+                                    <td><?= date("F j", strtotime($movie['start_date'])) ?></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <a href="edit-movie.php?id=<?= $movie['movie_id'] ?>">
+                                                <button class="btn-edit">Edit</button>
+                                            </a>
+                                            <form action="delete-movie.php" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this movie?');">
+                                                <input type="hidden" name="movie_id" value="<?= $movie['movie_id'] ?>">
+                                                <button class="btn-delete" type="submit">Delete</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php
                             endwhile;
                         else:
-                        ?>
-                        <tr><td colspan="5">No movies found.</td></tr>
+                            ?>
+                            <tr>
+                                <td colspan="5">No movies found.</td>
+                            </tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
@@ -92,10 +94,10 @@ include("includes/header.php");
                             while ($screening = $screenings->fetch_assoc()) {
                                 echo '<tr>';
                                 echo '<td>' . $screening['title'] . '</td>';
-                                echo '<td>' . date("F j", strtotime($screening['date'])) .'</td>';
-                                echo '<td>'. date("H:i", strtotime($screening['time'])) .'</td>';
-                                echo '<td>'. $screening['theater_id'] .'</td>';
-                                echo '<td>';?>
+                                echo '<td>' . date("F j", strtotime($screening['date'])) . '</td>';
+                                echo '<td>' . date("H:i", strtotime($screening['time'])) . '</td>';
+                                echo '<td>' . $screening['theater_id'] . '</td>';
+                                echo '<td>'; ?>
 
                                 <div class="action-buttons">
                                     <a href="edit-screening.php?id=<?= $screening['screening_id'] ?>">
@@ -106,7 +108,7 @@ include("includes/header.php");
                                         <button class="btn-delete" type="submit">Delete</button>
                                     </form>
                                 </div>
-                                <?php
+                        <?php
                                 echo '</td>';
                                 echo '</tr>';
                             }

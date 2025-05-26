@@ -6,7 +6,7 @@ if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
         header("Location: manager.php");
         exit();
     }
-}else{
+} else {
     header("Location: index.php");
     exit();
 }
@@ -42,35 +42,33 @@ $result = $stmt->get_result();
     <div class="container">
         <h2 class="section-title">My Bookings</h2>
 
-            <?php
-if ($result->num_rows > 0) {
-    echo '<div class="booking-info">';
-    //echo '<div class="movie-info-compact">';
+        <?php
+        if ($result->num_rows > 0) {
+            echo '<div class="booking-info">';
 
-    while ($row = $result->fetch_assoc()) {
-    ?>
-        <div class="movie-info-compact">
-            <img src="<?php echo htmlspecialchars($row['poster']); ?>"
-                alt="<?php echo htmlspecialchars($row['movie_title']); ?>" class="movie-thumbnail">
-            <div>
-                <h2><?php echo htmlspecialchars($row['movie_title']); ?></h2>
-                <p><?php echo htmlspecialchars(date("F j", strtotime($row['screening_date']))); ?>
-                    at <?php echo htmlspecialchars(date("g:i A", strtotime($row['screening_time']))); ?>
-                    • <?php echo htmlspecialchars($row['theater_name']); ?></p>
-                <p><?php echo htmlspecialchars($row['booked_seats']); ?></p>
-            </div>
-        </div>
-    <?php
-}
+            while ($row = $result->fetch_assoc()) {
+        ?>
+                <div class="movie-info-compact">
+                    <img src="<?php echo htmlspecialchars($row['poster']); ?>"
+                        alt="<?php echo htmlspecialchars($row['movie_title']); ?>" class="movie-thumbnail">
+                    <div>
+                        <h2><?php echo htmlspecialchars($row['movie_title']); ?></h2>
+                        <p><?php echo htmlspecialchars(date("F j", strtotime($row['screening_date']))); ?>
+                            at <?php echo htmlspecialchars(date("g:i A", strtotime($row['screening_time']))); ?>
+                            • <?php echo htmlspecialchars($row['theater_name']); ?></p>
+                        <p><?php echo htmlspecialchars($row['booked_seats']); ?></p>
+                    </div>
+                </div>
+        <?php
+            }
 
-    //echo '</div>';
-    echo '</div>';
-} else {
-    echo '<p>No bookings found.</p>';
-}
-?>
+            echo '</div>';
+        } else {
+            echo '<p>No bookings found.</p>';
+        }
+        ?>
     </div>
     </section>
     <?php
-include("includes/footer.php");
-?>
+    include("includes/footer.php");
+    ?>
