@@ -22,7 +22,7 @@ $stmt = $conn->prepare("SELECT
     s.date AS screening_date,
     s.time AS screening_time,
     t.theater_name AS theater_name,
-    GROUP_CONCAT(CONCAT(seats.row_number, '-', seats.column_number) ORDER BY seats.row_number, seats.column_number) AS booked_seats
+    GROUP_CONCAT(CONCAT(' ', seats.row_number, '-', seats.column_number) ORDER BY seats.row_number, seats.column_number) AS booked_seats
     FROM bookings b
     JOIN screenings s ON b.screening_id = s.screening_id
     JOIN movies m ON s.movie_id = m.movie_id
@@ -30,7 +30,7 @@ $stmt = $conn->prepare("SELECT
     JOIN seat_bookings sb ON b.booking_id = sb.booking_id
     JOIN seats ON sb.seat_id = seats.seat_id
     WHERE b.customer_id = ?
-    and s.date >= CURDATE()
+    AND s.date >= CURDATE()
     GROUP BY b.booking_id
     ORDER BY s.date, s.time;");
 $stmt->bind_param("i", $customer_id);
@@ -45,10 +45,11 @@ $result = $stmt->get_result();
             <?php
 if ($result->num_rows > 0) {
     echo '<div class="booking-info">';
-    echo '<div class="movie-info-compact">';
+    //echo '<div class="movie-info-compact">';
 
     while ($row = $result->fetch_assoc()) {
-?>
+    ?>
+        <div class="movie-info-compact">
             <img src="<?php echo htmlspecialchars($row['poster']); ?>"
                 alt="<?php echo htmlspecialchars($row['movie_title']); ?>" class="movie-thumbnail">
             <div>
@@ -56,19 +57,18 @@ if ($result->num_rows > 0) {
                 <p><?php echo htmlspecialchars(date("F j", strtotime($row['screening_date']))); ?>
                     at <?php echo htmlspecialchars(date("g:i A", strtotime($row['screening_time']))); ?>
                     • <?php echo htmlspecialchars($row['theater_name']); ?></p>
+                <p><?php echo htmlspecialchars($row['booked_seats']); ?></p>
             </div>
+        </div>
+    <?php
+}
 
-            <?php
-    }
-    echo '</div>';
+    //echo '</div>';
     echo '</div>';
 } else {
     echo '<p>No bookings found.</p>';
 }
 ?>
-
-
-        
     </div>
     </section>
     <?php
