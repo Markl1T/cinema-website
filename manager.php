@@ -36,25 +36,33 @@ displayHeader(true, false, false, true);
                         <?php
                         include("includes/connect-db.php");
                         $movies = $conn->execute_query("SELECT * FROM movies ORDER BY start_date");
-                        if ($movies->num_rows > 0) {
-                            while ($movie = $movies->fetch_assoc()) {
-                                echo '<tr>';
-                                echo '<td>' . $movie['title'] . '</td>';
-                                echo '<td>' . $movie['genre'] .'</td>';
-                                echo '<td>'. $movie['duration'] .'</td>';
-                                echo '<td>'. date("F j", strtotime($movie['start_date'])) .'</td>';
-                                echo '<td>';
-                                echo '<div class="action-buttons">';
-                                echo '<button class="btn-edit">Edit</button>';
-                                echo '<button class="btn-delete">Delete</button>';
-                                echo '</div>';
-                                echo '</td>';
-                                echo '</tr>';
-                            }
-                        } else {
-                            echo "<p>No movies found.</p>";
-                        }
+
+                        if ($movies->num_rows > 0):
+                            while ($movie = $movies->fetch_assoc()):
                         ?>
+                        <tr>
+                            <td><?= htmlspecialchars($movie['title']) ?></td>
+                            <td><?= htmlspecialchars($movie['genre']) ?></td>
+                            <td><?= htmlspecialchars($movie['duration']) ?></td>
+                            <td><?= date("F j", strtotime($movie['start_date'])) ?></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="edit-movie.php?id=<?= $movie['movie_id'] ?>">
+                                        <button class="btn-edit">Edit</button>
+                                    </a>
+                                    <form action="delete-movie.php" method="POST" style="display:inline;">
+                                        <input type="hidden" name="movie_id" value="<?= $movie['movie_id'] ?>">
+                                        <button class="btn-delete" type="submit">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php
+                            endwhile;
+                        else:
+                        ?>
+                        <tr><td colspan="5">No movies found.</td></tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>

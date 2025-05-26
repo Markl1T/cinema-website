@@ -1,11 +1,9 @@
 /* Base Styles */
 :root {
     --primary-color: #e50914;
-    /* Red */
     --primary-hover: #f40612;
     --secondary-color: #0a0a0a;
     --accent-color: #f5c518;
-    /* Yellow */
     --text-color: #e6e6e6;
     --text-light: #a0a0a0;
     --background-color: #050505;
@@ -188,7 +186,7 @@ nav a.active {
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/placeholder.svg?height=600&width=1200');
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('cinema-background.jpg');
     background-size: cover;
     background-position: center;
     color: white;
@@ -852,6 +850,28 @@ footer {
     border-color: var(--primary-color);
 }
 
+select {
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 2px solid #555;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #000;
+    appearance: none;
+    /* Removes default styling (Chrome, Safari, Edge) */
+    -webkit-appearance: none;
+    /* Safari */
+    -moz-appearance: none;
+    /* Firefox */
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px 16px;
+    width: 100%;
+    max-width: 300px;
+    cursor: pointer;
+}
+
 /* Manager and Admin Pages */
 .manager-page {
     padding: 40px 0;
@@ -987,7 +1007,6 @@ footer {
     width: 100%;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .movie-poster-large img {
