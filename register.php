@@ -1,7 +1,7 @@
 <?php
 // Session management
 session_start();
-if (isset($_SESSION["email"]) && isset($_SESSION["password"]) && isset($_SESSION["role"])) {
+if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
     if ($_SESSION["role"] === "manager") {
         header("Location: manager.php");
         exit();
@@ -52,7 +52,6 @@ if (isset($_POST["submit"])) {
 ?>
 <?php
 require("includes/header.php");
-displayHeader(true, true, true);
 ?>
 <main class="login-page">
     <div class="container">

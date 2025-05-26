@@ -1,7 +1,7 @@
 <?php
 // Session management
 session_start();
-if (isset($_SESSION["email"]) && isset($_SESSION["password"]) && isset($_SESSION["role"])) {
+if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
     if ($_SESSION["role"] === "manager") {
         header("Location: manager.php");
         exit();
@@ -33,8 +33,7 @@ if (isset($_POST["submit"])) {
         if ($result->num_rows > 0) {
             // Fetch the user data
             $user = $result->fetch_assoc();
-            $_SESSION["email"] = $user["email"];
-            $_SESSION["password"] = $user["password"];
+            $_SESSION["user_id"] = $user["customer_id"];
             $_SESSION["role"] = "customer";
 
             header("Location: index.php");
@@ -48,8 +47,7 @@ if (isset($_POST["submit"])) {
             if ($result->num_rows > 0) {
                 // Fetch the user data
                 $user = $result->fetch_assoc();
-                $_SESSION["email"] = $user["email"];
-                $_SESSION["password"] = $user["password"];
+                $_SESSION["user_id"] = $user["manager_id"];
                 $_SESSION["role"] = "manager";
 
                 header("Location: manager.php");
@@ -60,12 +58,12 @@ if (isset($_POST["submit"])) {
         }
     }
 }
+
+
+include("includes/header.php");
+
 ?>
 
-<?php
-include("includes/header.php");
-displayHeader(true, true, true);
-?>
 <main class="login-page">
     <div class="container">
         <div class="auth-container">
@@ -86,9 +84,9 @@ displayHeader(true, true, true);
 
                     <?php
                         if (!empty($error)) {?>
-                        <div class="form-group">
-                            <label style="color: red;"><?php echo $error;?></label>
-                        </div>
+                    <div class="form-group">
+                        <label style="color: red;"><?php echo $error;?></label>
+                    </div>
                     <?php } ?>
 
                     <input type="submit" name="submit" value="Sign In" class="btn-primary">

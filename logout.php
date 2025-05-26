@@ -2,10 +2,9 @@
     session_start();
 
     // Check tokens
-    if (isset($_SESSION["email"]) && isset($_SESSION["password"]) && isset($_SESSION["role"])) {
+    if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
         // Unset session variables
-        unset($_SESSION["email"]);
-        unset($_SESSION["password"]);
+        unset($_SESSION["user_id"]);
         unset($_SESSION["role"]);
         // Destroy the session
         session_destroy();

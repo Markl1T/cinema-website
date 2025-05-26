@@ -1,57 +1,19 @@
 <?php
     session_start();
-    if(!isset($_SESSION['email'])) {
+    if(isset($_SESSION['user_id']) && isset($_SESSION['role'])) {
+        if($_SESSION['role'] === 'manager') {
+            header("Location: manager.php");
+            exit();
+        }
+    } else {
         header("Location: login.php");
         exit();
-    } else {
-        if(isset($_GET['id']) && is_numeric($_GET['id'])) {
+    }
+
+    if(isset($_GET['id']) && is_numeric($_GET['id'])) {
         require_once("includes/connect-db.php");
-        $screening_id = $_GET['id'];
-        
-        if(isset($_POST["submit"])){
-            if(isset($_POST['selectedSeats']) && !empty($_POST['selectedSeats'])) {
-                $selectedSeats = explode(',', $_POST['selectedSeats']);
-                $theater_id = $_POST['theater_id'];
-
-                require_once("includes/connect-db.php");
-
-                $stmt = $conn->prepare("SELECT customer_id FROM customers WHERE email = ?;");
-                $stmt->bind_param("s", $_SESSION['email']);
-                $stmt->execute();
-                $result = $stmt->get_result();
-                $customer = $result->fetch_assoc();
-                $customer_id = $customer['customer_id'];
-
-                $stmt = $conn->prepare("INSERT INTO bookings (customer_id, screening_id) VALUES (?, ?);");
-                $stmt->bind_param("ii", $customer_id, $screening_id);
-                $stmt->execute();
-                
-                $stmt = $conn->prepare("SELECT booking_id FROM bookings WHERE customer_id = ? AND screening_id = ?;");
-                $stmt->bind_param("ii", $customer_id, $screening_id);
-                $stmt->execute();
-                $result = $stmt->get_result();
-                $booking = $result->fetch_assoc();
-                $booking_id = $booking['booking_id'];
-
-                foreach($selectedSeats as $seat) {
-                    $stmt = $conn->prepare("SELECT seat_id FROM seats WHERE theater_id = ? AND row_number = ? AND column_number = ?");
-                    $row_column = explode("-", $seat);
-                    $row = $row_column[0];
-                    $column = $row_column[1];
-                    $stmt->bind_param("isi", $theater_id, $row, $column);
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-                    $seat = $result->fetch_assoc();
-                    $seat_id = $seat['seat_id'];
-
-                    $stmt = $conn->prepare("INSERT INTO seat_bookings (booking_id, seat_id) VALUES (?, ?);");
-                    $stmt->bind_param("ii", $booking_id, $seat_id);
-                    $stmt->execute();
-                }
-                header("Location: index.php");
-                exit();
-            }
-        }
+        $screening_id = intval($_GET['id']);
+    
         $stmt = $conn->prepare("SELECT m.movie_id movie_id, title, poster, s.date date, s.time time, t.theater_id theater_id, theater_name
                                 FROM movies m, screenings s, theaters t
                                 WHERE m.movie_id = s.movie_id
@@ -63,22 +25,67 @@
         if($result->num_rows > 0) {
             $screening = $result->fetch_assoc();
         } else {
-            header("Location: movie-details.php?id=" . $screening['movie_id']);
+            header("Location: index.php");
             exit();
         }
     }else{
         header("Location: index.php");
         exit();
-    }    
     }
-    
+
+    // Handle booking submission
+    if(isset($_POST["submit"])){
+        if(isset($_POST['selectedSeats']) && !empty($_POST['selectedSeats'])) {
+            $selectedSeats = explode(',', $_POST['selectedSeats']);
+            $theater_id = $_POST['theater_id'];
+            $customer_id = intval($_SESSION['user_id']);
+            $screening_id = intval($_POST['screening_id']);
+
+            require_once("includes/connect-db.php");
+            $stmt = $conn->prepare("SELECT customer_id FROM customers WHERE customer_id = ?;");
+            $stmt->bind_param("s", $customer_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $customer = $result->fetch_assoc();
+            
+
+            $stmt = $conn->prepare("INSERT INTO bookings (customer_id, screening_id) VALUES (?, ?);");
+            $stmt->bind_param("ii", $customer_id, $screening_id);
+            $stmt->execute();
+            
+            $stmt = $conn->prepare("SELECT booking_id FROM bookings WHERE customer_id = ? AND screening_id = ?;");
+            $stmt->bind_param("ii", $customer_id, $screening_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $booking = $result->fetch_assoc();
+            $booking_id = $booking['booking_id'];
+
+            foreach($selectedSeats as $seat) {
+                $stmt = $conn->prepare("SELECT seat_id FROM seats WHERE theater_id = ? AND row_number = ? AND column_number = ?");
+                $row_column = explode("-", $seat);
+                $row = $row_column[0];
+                $column = $row_column[1];
+                $stmt->bind_param("isi", $theater_id, $row, $column);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $seat = $result->fetch_assoc();
+                $seat_id = $seat['seat_id'];
+
+                $stmt = $conn->prepare("INSERT INTO seat_bookings (booking_id, seat_id) VALUES (?, ?);");
+                $stmt->bind_param("ii", $booking_id, $seat_id);
+                $stmt->execute();
+            }
+            header("Location: bookings.php");
+            exit();
+        }
+    }
 
 ?>
 
 <?php
 require("includes/header.php");
-displayHeader(true, true, true);
 ?>
+
 <main class="seat-selection-page">
     <div class="container">
         <div class="booking-info">
@@ -123,15 +130,28 @@ displayHeader(true, true, true);
 
         while ($row = $result->fetch_assoc()) {
             $row_number = htmlspecialchars($row['row_number']);
+            
             echo "<div class='row-label'>$row_number</div>";
-            echo "<div class='seat-row'>"; //occupied
+            echo "<div class='seat-row'>"; 
             $seat_stmt = $conn->prepare("SELECT seat_id, row_number, column_number FROM seats WHERE theater_id = ? AND row_number = ? ORDER BY column_number;");
             $seat_stmt->bind_param("is", $screening['theater_id'], $row_number);
             $seat_stmt->execute();
             $seat_result = $seat_stmt->get_result();
             while ($seat = $seat_result->fetch_assoc()) {
+
                 $seat_id = htmlspecialchars($seat['seat_id']);
                 $column_number = htmlspecialchars($seat['column_number']);
+                // Check if the seat is occupied
+                $occupied_stmt = $conn->prepare("SELECT * FROM seat_bookings WHERE seat_id = ? AND booking_id IN (SELECT booking_id FROM bookings WHERE screening_id = ?);");
+                $occupied_stmt->bind_param("ii", $seat_id, $screening_id);
+                $occupied_stmt->execute();
+                $occupied_result = $occupied_stmt->get_result();
+                if ($occupied_result->num_rows > 0) {
+                    // Seat is occupied
+                    echo "<input class='seat occupied' data-row='$row_number' data-seat='$column_number' disabled>";
+                    continue;
+                }
+                
                 echo "<input class='seat' data-row='$row_number' data-seat='$column_number'>";
             }
             echo "</div>";

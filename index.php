@@ -1,23 +1,28 @@
 <?php
     session_start();
     include("includes/header.php");
-    if (isset($_SESSION["email"]) && isset($_SESSION["role"])) {
+    if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
         if ($_SESSION["role"] === "manager") {
             header("Location: manager.php");
             exit();
-        } else if ($_SESSION["role"] === "customer") {
-            displayHeader(true, false, false, true);
         }
-    }else{
-        displayHeader(true, true, true);
     }
+
+    require_once("includes/connect-db.php");
 ?>
 <section class="hero">
     <div class="hero-overlay"></div>
     <div class="hero-content">
         <h2>Experience Movies Like Never Before</h2>
         <p>Immerse yourself in the ultimate cinematic experience with state-of-the-art technology and premium comfort.</p>
-        <a href="register.php" class="btn-primary">Join now</a>
+        <?php
+        if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
+            if ($_SESSION["role"] === "customer") {
+                echo '<a href="bookings.php" class="btn-primary">View Bookings</a>';
+            }
+        } else {
+            echo '<a href="register.php" class="btn-primary">Join now</a>';
+        }?>
     </div>
 </section>
 
@@ -27,7 +32,6 @@
             <h2 class="section-title">Now Showing</h2>
             <div class="movies-grid">
                 <?php 
-                require_once("includes/connect-db.php");
                 $today = date("Y-m-d");
                 $now = date("H:i:s");
                 $movies = $conn->execute_query("SELECT m.* FROM movies m JOIN screenings s ON m.movie_id = s.movie_id WHERE date > ? OR (date = ? AND time > ?) GROUP BY movie_id", [$today, $today, $now]);
