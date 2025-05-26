@@ -57,7 +57,7 @@ include("includes/header.php");
                                     <a href="edit-movie.php?id=<?= $movie['movie_id'] ?>">
                                         <button class="btn-edit">Edit</button>
                                     </a>
-                                    <form action="delete-movie.php" method="POST" style="display:inline;">
+                                    <form action="delete-movie.php" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this movie?');">
                                         <input type="hidden" name="movie_id" value="<?= $movie['movie_id'] ?>">
                                         <button class="btn-delete" type="submit">Delete</button>
                                     </form>
@@ -95,11 +95,18 @@ include("includes/header.php");
                                 echo '<td>' . date("F j", strtotime($screening['date'])) .'</td>';
                                 echo '<td>'. date("H:i", strtotime($screening['time'])) .'</td>';
                                 echo '<td>'. $screening['theater_id'] .'</td>';
-                                echo '<td>';
-                                echo '<div class="action-buttons">';
-                                echo '<button class="btn-edit">Edit</button>';
-                                echo '<button class="btn-delete">Delete</button>';
-                                echo '</div>';
+                                echo '<td>';?>
+
+                                <div class="action-buttons">
+                                    <a href="edit-screening.php?id=<?= $screening['screening_id'] ?>">
+                                        <button class="btn-edit">Edit</button>
+                                    </a>
+                                    <form action="delete-screening.php" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this screening?');">
+                                        <input type="hidden" name="screening_id" value="<?= $screening['screening_id'] ?>">
+                                        <button class="btn-delete" type="submit">Delete</button>
+                                    </form>
+                                </div>
+                                <?php
                                 echo '</td>';
                                 echo '</tr>';
                             }
