@@ -352,6 +352,18 @@ nav a.active {
     transform: translateY(-2px);
 }
 
+.movie-block {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.movie-thumbnail {
+    width: 100%; 
+    height: auto;
+    margin-bottom: 10px;
+}
+
 /* Features Section */
 .features {
     background-color: #1a1a1a;
@@ -414,6 +426,7 @@ nav a.active {
     gap: 20px;
     background-color: var(--card-color);
     padding: 20px;
+    margin-bottom: 10px;
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
