@@ -24,6 +24,7 @@
     if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
         if ($_SESSION["role"] === "manager") {
             $nowshowing = false;
+            $bookings = false;
             $login = false;
             $register = false;
             $logout = true;
