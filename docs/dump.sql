@@ -70,6 +70,8 @@ CREATE TABLE managers (
     password VARCHAR(255)
 );
 
+INSERT INTO managers(email, password) VALUES('manager@gmail.com', '627fab0331074796f4d12c640200031b');
+
 INSERT INTO movies(title, rating, duration, release_year, director, cast, description, poster, trailer, start_date, genre) VALUES('Kill Bill', 'R', 111, 2003, 'Quentin Tarantino', 'Uma Thurman, Lucy Liu', 'A pregnant assassin, code-named The Bride, goes into a coma for four years after her ex-boss Bill brutally attacks her. When she wakes up, she sets out to seek revenge on him and his associates.', 'img/kill_bill.jpg', 'https://www.youtube.com/watch?v=7kSuas6mRpk', '2025-05-29', 'Action/Thriller');
 INSERT INTO movies(title, rating, duration, release_year, director, cast, description, poster, trailer, start_date, genre) VALUES('Kill Bill: Vol 2', 'R', 137, 2004, 'Quentin Tarantino', 'Uma Thurman, Lucy Liu', 'A pregnant woman, codenamed the Bride, sets out on a journey to kill her ex-boss, Bill, and targets his brother, Budd, and Elle Driver, the only two survivors of the Deadly Vipers Assassination Squad.', 'img/kill_bill_2.jpg', 'https://www.youtube.com/watch?v=WTt8cCIvGYI', '2025-05-30', 'Action/Thriller');
 
