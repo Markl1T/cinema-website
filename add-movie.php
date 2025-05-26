@@ -1,6 +1,15 @@
 <?php
+session_start();
+if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
+    if ($_SESSION["role"] === "customer") {
+        header("Location: index.php");
+        exit();
+    }
+}else{
+    header("Location: index.php");
+    exit();
+}
 include("includes/header.php");
-displayHeader(false, false,false, true);
 
 include_once("includes/connect-db.php");
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

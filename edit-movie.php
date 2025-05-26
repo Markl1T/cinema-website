@@ -1,22 +1,21 @@
 <?php
+session_start();
+if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
+    if ($_SESSION["role"] === "customer") {
+        header("Location: index.php");
+        exit();
+    }
+}else{
+    header("Location: index.php");
+    exit();
+}
+
 include("includes/header.php");
-displayHeader(false, false,false, true);
 
 include_once("includes/connect-db.php");
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    $id = trim($_GET['id']);
-    $stmt = $conn->prepare("SELECT * FROM movies WHERE movie_id = ?");
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    if ($result->num_rows > 0) {
-        $movie = $result->fetch_assoc();
-    } else {
-        echo "No movie found with that ID.";
-    }
-    $stmt->close();
-}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $id = intval($_POST['movie_id']);
     $title = trim($_POST['title']);
     $genre = trim($_POST['genre']);
     $duration = (int) $_POST['duration'];
@@ -91,6 +90,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
+
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    $id = trim($_GET['id']);
+    $stmt = $conn->prepare("SELECT * FROM movies WHERE movie_id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        $movie = $result->fetch_assoc();
+    } else {
+        echo "No movie found with that ID.";
+    }
+    $stmt->close();
+}
+
 ?>
 
 <main class="form-page">
@@ -101,6 +115,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="form-container">
             <form action="" method="post" class="admin-form" enctype="multipart/form-data">
                 <div class="form-grid">
+                    <input type="hidden" name="movie_id" value="<?php echo htmlspecialchars($movie['movie_id']); ?>">
+
                     <div class="form-group">
                         <label for="title">Movie Title*</label>
                         <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($movie['title']); ?>" required>

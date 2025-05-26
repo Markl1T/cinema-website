@@ -1,4 +1,17 @@
 <?php
+
+session_start();
+
+if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
+    if ($_SESSION["role"] !== "manager") {
+        header("Location: index.php");
+        exit();
+    }
+} else {
+    header("Location: index.php");
+    exit();
+}
+
 include ("includes/connect-db.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
