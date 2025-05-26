@@ -6,7 +6,7 @@ CREATE TABLE movies (
     movie_id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     rating VARCHAR(5),
-    duration INT,
+    duration INT NOT NULL,
     release_year INT NOT NULL,
     director VARCHAR(255) NOT NULL,
     cast VARCHAR(255),
