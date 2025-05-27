@@ -540,12 +540,16 @@ nav a.active {
 }
 
 .seat:hover {
-    background-color: var(--accent-color);
+    background-color: var(--text-color);
     transform: scale(1.05);
 }
 
 .seat.selected {
     background-color: var(--accent-color);
+}
+
+.seat.selected:hover {
+    background-color: var(--text-color);
 }
 
 .seat.occupied {

@@ -152,7 +152,7 @@ require("includes/header.php");
                                         continue;
                                     }
 
-                                    echo "<input class='seat' data-row='$row_number' data-seat='$column_number'>";
+                                    echo "<div class='seat' data-row='$row_number' data-seat='$column_number'></div>";
                                 }
                                 echo "</div>";
                             }
