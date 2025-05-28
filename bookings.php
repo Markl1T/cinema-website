@@ -22,7 +22,8 @@ $stmt = $conn->prepare("SELECT
     s.date AS screening_date,
     s.time AS screening_time,
     t.theater_name AS theater_name,
-    GROUP_CONCAT(CONCAT(' ', seats.row_number, '-', seats.column_number) ORDER BY seats.row_number, seats.column_number) AS booked_seats
+    GROUP_CONCAT(CONCAT(' ', seats.row_number, '-', seats.column_number) 
+    ORDER BY seats.row_number, seats.column_number) AS booked_seats
     FROM bookings b
     JOIN screenings s ON b.screening_id = s.screening_id
     JOIN movies m ON s.movie_id = m.movie_id

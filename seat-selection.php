@@ -25,11 +25,13 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     if ($result->num_rows > 0) {
         $screening = $result->fetch_assoc();
     } else {
-        header("Location: index.php");
+        http_response_code(404);
+        include("404.php");
         exit();
     }
 } else {
-    header("Location: index.php");
+    http_response_code(404);
+    include("404.php");
     exit();
 }
 
