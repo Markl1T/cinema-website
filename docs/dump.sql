@@ -29,8 +29,8 @@ CREATE TABLE screenings (
     theater_id INT,
     date DATE,
     time TIME,
-    FOREIGN KEY (movie_id) REFERENCES movies(movie_id),
-    FOREIGN KEY (theater_id) REFERENCES theaters(theater_id)
+    FOREIGN KEY (movie_id) REFERENCES movies(movie_id) ON DELETE CASCADE,
+    FOREIGN KEY (theater_id) REFERENCES theaters(theater_id) ON DELETE CASCADE
 );
 
 CREATE TABLE customers (
@@ -44,8 +44,8 @@ CREATE TABLE bookings (
     booking_id INT AUTO_INCREMENT PRIMARY KEY,
     screening_id INT,
     customer_id INT,
-    FOREIGN KEY (screening_id) REFERENCES screenings(screening_id),
-    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+    FOREIGN KEY (screening_id) REFERENCES screenings(screening_id) ON DELETE CASCADE,
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE CASCADE
 );
 
 CREATE TABLE seats (
@@ -53,15 +53,15 @@ CREATE TABLE seats (
     row_number INT NOT NULL,
     column_number INT NOT NULL,
     theater_id INT NOT NULL,
-    FOREIGN KEY (theater_id) REFERENCES theaters(theater_id)
+    FOREIGN KEY (theater_id) REFERENCES theaters(theater_id) ON DELETE CASCADE
 );
 
 CREATE TABLE seat_bookings (
     booking_id INT,
     seat_id INT,
     PRIMARY KEY (booking_id, seat_id),
-    FOREIGN KEY (booking_id) REFERENCES bookings(booking_id),
-    FOREIGN KEY (seat_id) REFERENCES seats(seat_id)
+    FOREIGN KEY (booking_id) REFERENCES bookings(booking_id) ON DELETE CASCADE,
+    FOREIGN KEY (seat_id) REFERENCES seats(seat_id) ON DELETE CASCADE
 );
 
 CREATE TABLE managers (
