@@ -8,54 +8,67 @@ if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
     } else if ($_SESSION["role"] === "customer") {
         header("Location: index.php");
         exit();
+    } else if ($_SESSION["role"] === "admin") {
+        header("Location: admin.php");
+        exit();
     }
 }
 
-
-// Authentication
 $error = "";
 require_once("includes/connect-db.php");
+
 if (isset($_POST["submit"])) {
     $email = $conn->real_escape_string($_POST["loginEmail"]);
     $password = $conn->real_escape_string($_POST["loginPassword"]);
 
-    // Hash the password
     $password .= $salt;
     $hashedPassword = hash("md5", $password);
 
     if (!empty($email) && !empty($password)) {
-        // Check if credentials are valid and belong to a customer or manager
+        // Check customers
         $stmt = $conn->prepare("SELECT * FROM customers WHERE email = ? AND password = ?");
         $stmt->bind_param("ss", $email, $hashedPassword);
         $stmt->execute();
         $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
-            // Fetch the user data
             $user = $result->fetch_assoc();
             $_SESSION["user_id"] = $user["customer_id"];
             $_SESSION["role"] = "customer";
-
             header("Location: index.php");
             exit();
-        } else {
-            // Check if credentials are valid and belong to a manager
-            $stmt = $conn->prepare("SELECT * FROM managers WHERE email = ? AND password = ?");
-            $stmt->bind_param("ss", $email, $hashedPassword);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows > 0) {
-                // Fetch the user data
-                $user = $result->fetch_assoc();
-                $_SESSION["user_id"] = $user["manager_id"];
-                $_SESSION["role"] = "manager";
-
-                header("Location: manager.php");
-                exit();
-            } else {
-                $error = "Invalid email or password";
-            }
         }
+
+        // Check managers
+        $stmt = $conn->prepare("SELECT * FROM managers WHERE email = ? AND password = ?");
+        $stmt->bind_param("ss", $email, $hashedPassword);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $user = $result->fetch_assoc();
+            $_SESSION["user_id"] = $user["manager_id"];
+            $_SESSION["role"] = "manager";
+            header("Location: manager.php");
+            exit();
+        }
+
+        // Check admins
+        $stmt = $conn->prepare("SELECT * FROM admins WHERE email = ? AND password = ?");
+        $stmt->bind_param("ss", $email, $hashedPassword);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $user = $result->fetch_assoc();
+            $_SESSION["user_id"] = $user["admin_id"];
+            $_SESSION["role"] = "admin";
+            header("Location: admin.php");
+            exit();
+        }
+
+        // If none match
+        $error = "Invalid email or password";
     }
 }
 

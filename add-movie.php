@@ -4,6 +4,8 @@ if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
     if ($_SESSION["role"] === "customer") {
         header("Location: index.php");
         exit();
+    } else if ($_SESSION["role"] === "admin") {
+        header("Location: admin.php");
     }
 } else {
     header("Location: index.php");

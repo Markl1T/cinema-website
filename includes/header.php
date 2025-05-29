@@ -34,6 +34,12 @@
                             $login = false;
                             $register = false;
                             $logout = true;
+                        } else if ($_SESSION["role"] === "admin") {
+                            $nowshowing = false;
+                            $bookings = false;
+                            $login = false;
+                            $register = false;
+                            $logout = true;
                         }
                     } else {
                         $nowshowing = true;
