@@ -2,6 +2,10 @@
 // Session management
 session_start();
 if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
+    if($_SESSION["role"] === "admin") {
+        header("Location: admin.php");
+        exit();
+    }
     if ($_SESSION["role"] === "manager") {
         header("Location: manager.php");
         exit();

@@ -6,6 +6,7 @@ if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
         exit();
     } else if ($_SESSION["role"] === "admin") {
         header("Location: admin.php");
+        exit();
     }
 }
 else {
