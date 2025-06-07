@@ -1,13 +1,6 @@
 <?php
 session_start();
 
-if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
-    if ($_SESSION["role"] === "manager") {
-        header("Location: manager.php");
-        exit();
-    }
-}
-
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     require_once("includes/connect-db.php");
     $movie_id = $_GET['id'];
@@ -31,7 +24,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 ?>
 
 <?php
-require("includes/header.php");
+include_once("includes/header.php");
 ?>
 <main class="movie-details-page">
     <div class="container">
@@ -134,5 +127,5 @@ require("includes/header.php");
 </main>
 
 <?php
-require("includes/footer.php");
+include_once("includes/footer.php");
 ?>

@@ -1,5 +1,5 @@
 <?php
-include("includes/header.php");
+include_once("includes/header.php");
 ?>
 
 <main class="error-page">
@@ -37,5 +37,5 @@ include("includes/header.php");
 </main>
 
 <?php
-include("includes/footer.php");
+include_once("includes/footer.php");
 ?>

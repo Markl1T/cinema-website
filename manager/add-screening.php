@@ -3,19 +3,19 @@ session_start();
 
 if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
     if ($_SESSION["role"] === "customer") {
-        header("Location: index.php");
+        header("Location: ../index.php");
         exit();
     } else if ($_SESSION["role"] === "admin") {
-        header("Location: admin.php");
+        header("Location: ../admin/admin.php");
         exit();
     }
 } else {
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit();
 }
 
-include("includes/header.php");
-require_once("includes/connect-db.php");
+include("../includes/header.php");
+require_once("../includes/connect-db.php");
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -97,4 +97,4 @@ $theaters = $conn->query("SELECT theater_id, theater_name FROM theaters ORDER BY
     </div>
 </main>
 
-<?php include("includes/footer.php"); ?>
+<?php include("../includes/footer.php"); ?>

@@ -3,14 +3,14 @@
 session_start();
 if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
     if($_SESSION["role"] === "admin") {
-        header("Location: admin.php");
+        header("Location: ../admin/admin.php");
         exit();
     }
     if ($_SESSION["role"] === "manager") {
-        header("Location: manager.php");
+        header("Location: ../manager/manager.php");
         exit();
     } else if ($_SESSION["role"] === "customer") {
-        header("Location: index.php");
+        header("Location: ../index.php");
         exit();
     }
 }
@@ -19,7 +19,7 @@ if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
 <?php
 // Adding customer to database
 $error = "";
-require_once("includes/connect-db.php");
+require_once("../includes/connect-db.php");
 if (isset($_POST["submit"])) {
     $name = $conn->real_escape_string($_POST["registerName"]);
     $email = $conn->real_escape_string($_POST["registerEmail"]);
@@ -55,7 +55,7 @@ if (isset($_POST["submit"])) {
 
 ?>
 <?php
-require("includes/header.php");
+include_once("../includes/header.php");
 ?>
 <main class="login-page">
     <div class="container">
@@ -96,5 +96,5 @@ require("includes/header.php");
 </main>
 
 <?php
-require("includes/footer.php");
+include_once("../includes/footer.php");
 ?>

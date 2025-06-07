@@ -3,19 +3,19 @@ session_start();
 
 if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
     if ($_SESSION["role"] === "customer") {
-        header("Location: index.php");
+        header("Location: ../index.php");
         exit();
     } else if ($_SESSION["role"] === "manager") {
-        header("Location: manager.php");
+        header("Location: ../manager/manager.php");
         exit();
     }
 }
 else {
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit();
 }
 
-include("includes/connect-db.php");
+require_once("../includes/connect-db.php");
 
 $stats = array();
 
@@ -140,7 +140,7 @@ if ($result->num_rows > 0) {
 $conn->close();
 ?>
 
-<?php include("includes/header.php"); ?>
+<?php include_once("../includes/header.php"); ?>
     <main class="admin-dashboard">
         <div class="container">
             <h2 class="section-title">Admin Dashboard</h2>
@@ -372,9 +372,7 @@ $conn->close();
             </div>
         </div>
     </main>
-
-    <?php include("includes/footer.php"); ?>
-
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const tabs = document.querySelectorAll('.dashboard-tab');
@@ -410,5 +408,5 @@ $conn->close();
             });
         });
     </script>
-</body>
-</html>
+    
+<?php include_once("../includes/footer.php"); ?>

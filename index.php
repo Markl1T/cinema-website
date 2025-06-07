@@ -1,15 +1,6 @@
 <?php
 session_start();
-include("includes/header.php");
-if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
-    if ($_SESSION["role"] === "manager") {
-        header("Location: manager.php");
-        exit();
-    } else if ($_SESSION["role"] === "admin") {
-        header("Location: admin.php");
-        exit();
-    }
-}
+include_once("includes/header.php");
 
 require_once("includes/connect-db.php");
 ?>
@@ -21,10 +12,10 @@ require_once("includes/connect-db.php");
         <?php
         if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
             if ($_SESSION["role"] === "customer") {
-                echo '<a href="bookings.php" class="btn-primary">View Bookings</a>';
+                echo '<a href="customer/bookings.php" class="btn-primary">View Bookings</a>';
             }
         } else {
-            echo '<a href="register.php" class="btn-primary">Join now</a>';
+            echo '<a href="auth/register.php" class="btn-primary">Join now</a>';
         } ?>
     </div>
 </section>
@@ -90,5 +81,5 @@ require_once("includes/connect-db.php");
 </main>
 
 <?php
-require("includes/footer.php");
+include_once("includes/footer.php");
 ?>

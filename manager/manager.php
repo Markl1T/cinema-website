@@ -2,18 +2,18 @@
 session_start();
 if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
     if ($_SESSION["role"] === "customer") {
-        header("Location: index.php");
+        header("Location: ../index.php");
         exit();
     } else if ($_SESSION["role"] === "admin") {
-        header("Location: admin.php");
+        header("Location: ../admin/admin.php");
         exit();
     }
 }
 else {
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit();
 }
-include("includes/header.php");
+include("../includes/header.php");
 ?>
 
 <body>
@@ -47,7 +47,7 @@ include("includes/header.php");
                     </thead>
                     <tbody>
                         <?php
-                        include("includes/connect-db.php");
+                        require_once("../includes/connect-db.php");
                         $movies = $conn->execute_query("SELECT * FROM movies ORDER BY start_date");
 
                         if ($movies->num_rows > 0):
@@ -154,5 +154,5 @@ include("includes/header.php");
         });
     </script>
     <?php
-    include("includes/footer.php");
+    include("../includes/footer.php");
     ?>

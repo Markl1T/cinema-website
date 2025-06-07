@@ -1,14 +1,11 @@
 <?php
 session_start();
 if (isset($_SESSION['user_id']) && isset($_SESSION['role'])) {
-    if ($_SESSION['role'] === 'manager') {
-        header("Location: manager.php");
-        exit();
-    } else if($_SESSION["role"] === "admin") {
-        header("Location: admin.php");
+    if($_SESSION["role"] === "admin") {
+        header("Location: admin/admin.php");
     }
 } else {
-    header("Location: login.php");
+    header("Location: auth/login.php");
     exit();
 }
 
@@ -79,7 +76,7 @@ if (isset($_POST["submit"])) {
             $stmt->bind_param("ii", $booking_id, $seat_id);
             $stmt->execute();
         }
-        header("Location: bookings.php");
+        header("Location: customer/bookings.php");
         exit();
     }
 }
@@ -87,7 +84,7 @@ if (isset($_POST["submit"])) {
 ?>
 
 <?php
-require("includes/header.php");
+include_once("includes/header.php");
 ?>
 
 <main class="seat-selection-page">
@@ -209,7 +206,7 @@ require("includes/header.php");
 </main>
 
 <?php
-require("includes/footer.php");
+include_once("includes/footer.php");
 ?>
 
 <script>

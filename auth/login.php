@@ -3,19 +3,19 @@
 session_start();
 if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
     if ($_SESSION["role"] === "manager") {
-        header("Location: manager.php");
+        header("Location: ../manager/manager.php");
         exit();
     } else if ($_SESSION["role"] === "customer") {
-        header("Location: index.php");
+        header("Location: ../index.php");
         exit();
     } else if ($_SESSION["role"] === "admin") {
-        header("Location: admin.php");
+        header("Location: ../admin/admin.php");
         exit();
     }
 }
 
 $error = "";
-require_once("includes/connect-db.php");
+require_once("../includes/connect-db.php");
 
 if (isset($_POST["submit"])) {
     $email = $conn->real_escape_string($_POST["loginEmail"]);
@@ -35,7 +35,7 @@ if (isset($_POST["submit"])) {
             $user = $result->fetch_assoc();
             $_SESSION["user_id"] = $user["customer_id"];
             $_SESSION["role"] = "customer";
-            header("Location: index.php");
+            header("Location: ../index.php");
             exit();
         }
 
@@ -49,7 +49,7 @@ if (isset($_POST["submit"])) {
             $user = $result->fetch_assoc();
             $_SESSION["user_id"] = $user["manager_id"];
             $_SESSION["role"] = "manager";
-            header("Location: manager.php");
+            header("Location: ../manager/manager.php");
             exit();
         }
 
@@ -63,7 +63,7 @@ if (isset($_POST["submit"])) {
             $user = $result->fetch_assoc();
             $_SESSION["user_id"] = $user["admin_id"];
             $_SESSION["role"] = "admin";
-            header("Location: admin.php");
+            header("Location: ../admin/admin.php");
             exit();
         }
 
@@ -73,7 +73,7 @@ if (isset($_POST["submit"])) {
 }
 
 
-include("includes/header.php");
+include_once("../includes/header.php");
 
 ?>
 
@@ -110,5 +110,5 @@ include("includes/header.php");
 </main>
 
 <?php
-require("includes/footer.php");
+include_once("../includes/footer.php");
 ?>

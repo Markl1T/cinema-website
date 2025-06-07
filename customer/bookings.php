@@ -1,20 +1,20 @@
 <?php
 session_start();
-include("includes/header.php");
+include_once("../includes/header.php");
 if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
     if ($_SESSION["role"] === "manager") {
-        header("Location: manager.php");
+        header("Location: ../manager/manager.php");
         exit();
     } else if ($_SESSION["role"] === "admin") {
-        header("Location: admin.php");
+        header("Location: ../admin/admin.php");
         exit();
     }
 } else {
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit();
 }
 
-require_once("includes/connect-db.php");
+require_once("../includes/connect-db.php");
 
 $customer_id = $_SESSION["user_id"];
 
@@ -74,5 +74,5 @@ $result = $stmt->get_result();
     </div>
     </section>
     <?php
-    include("includes/footer.php");
+    include_once("../includes/footer.php");
     ?>
