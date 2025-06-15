@@ -70,15 +70,15 @@ CREATE TABLE managers (
     password VARCHAR(255)
 );
 
-INSERT INTO managers(email, password) VALUES('manager@gmail.com', '627fab0331074796f4d12c640200031b');
+CREATE TABLE admins (
+    admin_id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255),
+    password VARCHAR(255)
+);
 
-INSERT INTO movies(title, rating, duration, release_year, director, cast, description, poster, trailer, start_date, genre) VALUES('Kill Bill', 'R', 111, 2003, 'Quentin Tarantino', 'Uma Thurman, Lucy Liu', 'A pregnant assassin, code-named The Bride, goes into a coma for four years after her ex-boss Bill brutally attacks her. When she wakes up, she sets out to seek revenge on him and his associates.', 'img/kill_bill.jpg', 'https://www.youtube.com/watch?v=7kSuas6mRpk', '2025-05-29', 'Action/Thriller');
-INSERT INTO movies(title, rating, duration, release_year, director, cast, description, poster, trailer, start_date, genre) VALUES('Kill Bill: Vol 2', 'R', 137, 2004, 'Quentin Tarantino', 'Uma Thurman, Lucy Liu', 'A pregnant woman, codenamed the Bride, sets out on a journey to kill her ex-boss, Bill, and targets his brother, Budd, and Elle Driver, the only two survivors of the Deadly Vipers Assassination Squad.', 'img/kill_bill_2.jpg', 'https://www.youtube.com/watch?v=WTt8cCIvGYI', '2025-05-30', 'Action/Thriller');
+INSERT INTO admins(email, password) VALUES('admin@starcinema.com', '627fab0331074796f4d12c640200031b');
 
-INSERT INTO theaters(theater_name, capacity) VALUES('Screen 1', 60);
-INSERT INTO screenings(movie_id, theater_id, date, time) VALUES(1, 1, '2025-05-29', '13:00:00');
-INSERT INTO screenings(movie_id, theater_id, date, time) VALUES(1, 1, '2025-05-29', '14:00:00');
-INSERT INTO screenings(movie_id, theater_id, date, time) VALUES(1, 1, '2025-05-30', '13:00:00');
+INSERT INTO theaters(theater_name, capacity) VALUES('Screen 1', 80);
 
 INSERT INTO seats(theater_id, row_number, column_number) VALUES
 (1, 1, 1), (1, 1, 2), (1, 1, 3), (1, 1, 4), (1, 1, 5), (1, 1, 6), (1, 1, 7), (1, 1, 8), (1, 1, 9), (1, 1, 10),
