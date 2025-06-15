@@ -57,18 +57,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_FILES['poster']) && $_FILES['poster']['error'] === UPLOAD_ERR_OK) {
         $poster_tmp = $_FILES['poster']['tmp_name'];
         $poster_name = basename($_FILES['poster']['name']);
-        $upload_dir = '/cinema-website/img/posters/';
-        $poster_path = $upload_dir . $poster_name;
+        $upload_dir = __DIR__ . '/../img/posters/';
+        $save_path = $upload_dir . $poster_name;
+        $poster_path = '/cinema-website/img/posters/' . $poster_name;
 
         // Ensure upload directory exists
         if (!is_dir($upload_dir)) {
             mkdir($upload_dir, 0755, true);
         }
 
-        move_uploaded_file($poster_tmp, $poster_path);
+        move_uploaded_file($poster_tmp, $save_path);
     }
 
-    if ($trailer_url != '') {
+    if ($trailer_url != '' && !str_contains($trailer_url, "embed")) {
         $v = explode('?v=', $trailer_url)[1];
         $trailer_url = 'https://www.youtube.com/embed/' . $v;
     }

@@ -186,9 +186,6 @@ nav a.active {
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('cinema-background.jpg');
-    background-size: cover;
-    background-position: center;
     color: white;
     text-align: center;
     padding: 150px 0;
